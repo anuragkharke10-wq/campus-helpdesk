@@ -43,5 +43,5 @@ uv run python server.py          # speaks MCP JSON-RPC on stdin/stdout; logs go 
 | Workstream | Status |
 |---|---|
 | Skill tests | 7 trigger prompts + 3 description variants (tests/skill-triggers) |
-| MCP server tests | not started |
-| Hook path fix | not started |
+| MCP server tests | SDK client test + raw JSON-RPC trace (mcp-server/tests) |
+| Hook path fix | done: absolute, `..` and case-variant paths blocked (hooks/test_protect_records.py) |
