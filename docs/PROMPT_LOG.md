@@ -25,7 +25,7 @@ The session began with my request to complete Assignment 8 end-to-end (repo, tes
 ## Steps the AI could not do (left for me, not faked)
 - ~~**Part B3/B4 trigger results**~~: done after logging in. All three variants ran (v3 and v1 twice each) and the results are in the report.
 - ~~**Part C2 install log**~~: done after I installed the CLI (2.1.327). The real output is in `evidence/partC_plugin_install.log`. Both manifests validated, and the install and uninstall cycle succeeded.
-- **Part D2 Inspector:** running the Inspector through `npx` was blocked by the session's permission policy. Run the three `--cli` commands from the report and add a screenshot.
+- ~~**Part D2 Inspector**~~: done in Terminal.app (Inspector 2.13.0, `tools/list`). The screenshot is in `evidence/partD_inspector_tools_list.webp`.
 
 ## My own entries
 _(Add your own prompts here, for example when you run the trigger tests or ask an AI to explain a result. Use the same columns.)_

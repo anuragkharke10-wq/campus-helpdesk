@@ -249,7 +249,11 @@ uv run python tests/trace_stdio.py ../../../evidence/partD_mcp_trace.jsonl
    npx @modelcontextprotocol/inspector --cli uv run python server.py --method tools/call --tool-name get_timetable --tool-arg batch=CSE-A --tool-arg day=Monday
    npx @modelcontextprotocol/inspector --cli uv run python server.py --method resources/list
    ```
-   The web UI starts with `npx @modelcontextprotocol/inspector`. Enter `uv` as the command and `run python server.py` as the arguments. _Output and screenshot to be added by the student: downloading and running the Inspector through `npx` was blocked by the permission policy on the build machine, so this step was **not run**._
+   The web UI starts with `npx @modelcontextprotocol/inspector`. Enter `uv` as the command and `run python server.py` as the arguments.
+
+   **Executed** in Terminal.app on 18 Nov 2026. `npx` installed `@modelcontextprotocol/inspector@2.13.0`, and the `tools/list` call returned both tools with the same descriptions, `pattern`/`enum` constraints and `required` fields as the raw trace in D3. This independently confirms the server's contract with the official tool (screenshot: `evidence/partD_inspector_tools_list.webp`).
+
+   ![MCP Inspector CLI: tools/list against the campus-helpdesk server](../evidence/partD_inspector_tools_list.webp)
 
 ### D3. Annotated JSON-RPC exchange (from `evidence/partD_mcp_trace.jsonl`)
 

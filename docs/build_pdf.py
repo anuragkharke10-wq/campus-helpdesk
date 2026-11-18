@@ -25,6 +25,7 @@ code { font-family: Menlo, Consolas, monospace; font-size: 8.4pt; background: #f
 pre { background: #f6f6f6; border: 1px solid #ddd; padding: 6pt; white-space: pre-wrap; word-break: break-all; font-size: 8pt; page-break-inside: avoid; }
 pre code { background: none; padding: 0; }
 blockquote { border-left: 3px solid #c80; margin: 6pt 0; padding: 2pt 8pt; background: #fff8ec; }
+img { max-width: 100%; border: 1px solid #ccc; margin: 6pt 0; }
 .part-break { page-break-before: always; }
 """
 
