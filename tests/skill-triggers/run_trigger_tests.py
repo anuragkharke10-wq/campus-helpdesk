@@ -57,6 +57,10 @@ def main() -> int:
     ap.add_argument("--variant", choices=sorted(SPEC["descriptions"]), default="v3-final")
     ap.add_argument("--dry-run", action="store_true")
     args = ap.parse_args()
+    if not args.dry_run and shutil.which("claude") is None:
+        print("The Claude Code CLI ('claude') is not on your PATH. Install it, run 'claude' once to log in, "
+              "then re-run this script. See https://code.claude.com/docs/en/setup", file=sys.stderr)
+        return 1
 
     out_dir = ROOT / "evidence" / "partB_triggers" / args.variant
     out_dir.mkdir(parents=True, exist_ok=True)
