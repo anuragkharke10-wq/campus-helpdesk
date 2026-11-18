@@ -1,0 +1,50 @@
+### E1. Create one linked worktree per branch
+$ git worktree add -b feature/skill-tests ../campus-helpdesk-wt/skill-tests main
+Preparing worktree (new branch 'feature/skill-tests')
+HEAD is now at 3777309 Add campus-helpdesk plugin: timetable Skill, command, hook, MCP server
+
+$ git worktree add -b feature/mcp-server ../campus-helpdesk-wt/mcp-server main
+Preparing worktree (new branch 'feature/mcp-server')
+HEAD is now at 3777309 Add campus-helpdesk plugin: timetable Skill, command, hook, MCP server
+
+$ git worktree add -b bugfix/hook-path ../campus-helpdesk-wt/hook-path main
+Preparing worktree (new branch 'bugfix/hook-path')
+HEAD is now at 3777309 Add campus-helpdesk plugin: timetable Skill, command, hook, MCP server
+
+$ git worktree list
+/Users/anuragkharke/Desktop/campus-helpdesk                 3777309 [main]
+/Users/anuragkharke/Desktop/campus-helpdesk-wt/hook-path    3777309 [bugfix/hook-path]
+/Users/anuragkharke/Desktop/campus-helpdesk-wt/mcp-server   3777309 [feature/mcp-server]
+/Users/anuragkharke/Desktop/campus-helpdesk-wt/skill-tests  3777309 [feature/skill-tests]
+
+$ git worktree list --porcelain
+worktree /Users/anuragkharke/Desktop/campus-helpdesk
+HEAD 37773092abe7ada2b088046cb9dc849d27d5b733
+branch refs/heads/main
+
+worktree /Users/anuragkharke/Desktop/campus-helpdesk-wt/hook-path
+HEAD 37773092abe7ada2b088046cb9dc849d27d5b733
+branch refs/heads/bugfix/hook-path
+
+worktree /Users/anuragkharke/Desktop/campus-helpdesk-wt/mcp-server
+HEAD 37773092abe7ada2b088046cb9dc849d27d5b733
+branch refs/heads/feature/mcp-server
+
+worktree /Users/anuragkharke/Desktop/campus-helpdesk-wt/skill-tests
+HEAD 37773092abe7ada2b088046cb9dc849d27d5b733
+branch refs/heads/feature/skill-tests
+
+
+### Git refuses a second checkout of the same branch
+$ git worktree add ../campus-helpdesk-wt/dup feature/mcp-server
+Preparing worktree (checking out 'feature/mcp-server')
+fatal: 'feature/mcp-server' is already checked out at '/Users/anuragkharke/Desktop/campus-helpdesk-wt/mcp-server'
+
+[exit code of the refused add: 128]
+
+### Shared object database: every worktree reports the same common dir
+. -> git-dir=.git common-dir=.git
+../campus-helpdesk-wt/skill-tests -> git-dir=/Users/anuragkharke/Desktop/campus-helpdesk/.git/worktrees/skill-tests common-dir=/Users/anuragkharke/Desktop/campus-helpdesk/.git
+../campus-helpdesk-wt/mcp-server -> git-dir=/Users/anuragkharke/Desktop/campus-helpdesk/.git/worktrees/mcp-server common-dir=/Users/anuragkharke/Desktop/campus-helpdesk/.git
+../campus-helpdesk-wt/hook-path -> git-dir=/Users/anuragkharke/Desktop/campus-helpdesk/.git/worktrees/hook-path common-dir=/Users/anuragkharke/Desktop/campus-helpdesk/.git
+

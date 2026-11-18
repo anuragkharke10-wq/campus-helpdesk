@@ -1,0 +1,37 @@
+### E2. One change per worktree
+## worktree: feature/skill-tests
+$ git add -A
+
+$ git commit -m Add Skill trigger test prompts and runner -m Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+[feature/skill-tests b6a0ec9] Add Skill trigger test prompts and runner
+ 3 files changed, 110 insertions(+), 1 deletion(-)
+ create mode 100644 tests/skill-triggers/prompts.json
+ create mode 100644 tests/skill-triggers/run_trigger_tests.py
+
+## worktree: feature/mcp-server
+$ git add -A
+
+$ git commit -m Add MCP server stdio trace and SDK client tests -m Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+[feature/mcp-server 6293471] Add MCP server stdio trace and SDK client tests
+ 3 files changed, 146 insertions(+), 2 deletions(-)
+ create mode 100644 plugins/campus-helpdesk/mcp-server/tests/test_server.py
+ create mode 100644 plugins/campus-helpdesk/mcp-server/tests/trace_stdio.py
+
+## worktree: bugfix/hook-path
+$ python3 plugins/campus-helpdesk/hooks/test_protect_records.py
+PASS  exit=2 expected=2  absolute path into records/
+PASS  exit=2 expected=2  relative path into records/
+PASS  exit=2 expected=2  '..' traversal into records/
+PASS  exit=2 expected=2  case variant on case-insensitive FS
+PASS  exit=0 expected=0  ordinary file
+PASS  exit=0 expected=0  name merely starts with 'records'
+PASS  exit=2 expected=2  timetable CSV
+ALL HOOK CHECKS PASSED
+
+$ git add -A
+
+$ git commit -m Fix hook path check: resolve absolute paths, block traversal and case variants -m Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+[bugfix/hook-path 271e3d6] Fix hook path check: resolve absolute paths, block traversal and case variants
+ 2 files changed, 75 insertions(+), 8 deletions(-)
+ create mode 100755 plugins/campus-helpdesk/hooks/test_protect_records.py
+

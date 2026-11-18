@@ -1,0 +1,96 @@
+### Merge the three branches into main (main worktree)
+$ git merge --no-ff bugfix/hook-path -m Merge bugfix/hook-path -m Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Merge made by the 'ort' strategy.
+ plugins/campus-helpdesk/hooks/protect_records.py   | 45 ++++++++++++++++++----
+ .../campus-helpdesk/hooks/test_protect_records.py  | 38 ++++++++++++++++++
+ 2 files changed, 75 insertions(+), 8 deletions(-)
+ create mode 100755 plugins/campus-helpdesk/hooks/test_protect_records.py
+[exit 0]
+
+$ git merge --no-ff feature/skill-tests -m Merge feature/skill-tests -m Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Merge made by the 'ort' strategy.
+ README.md                                 |  2 +-
+ tests/skill-triggers/prompts.json         | 16 ++++++
+ tests/skill-triggers/run_trigger_tests.py | 93 +++++++++++++++++++++++++++++++
+ 3 files changed, 110 insertions(+), 1 deletion(-)
+ create mode 100644 tests/skill-triggers/prompts.json
+ create mode 100644 tests/skill-triggers/run_trigger_tests.py
+[exit 0]
+
+$ git merge --no-ff feature/mcp-server -m Merge feature/mcp-server -m Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+Auto-merging README.md
+CONFLICT (content): Merge conflict in README.md
+Automatic merge failed; fix conflicts and then commit the result.
+[exit 1]
+
+$ git status --short
+UU README.md
+A  plugins/campus-helpdesk/mcp-server/tests/test_server.py
+A  plugins/campus-helpdesk/mcp-server/tests/trace_stdio.py
+?? evidence/partE_changes.log
+?? evidence/partE_merge_conflict.log
+?? evidence/partE_worktrees.log
+[exit 0]
+
+$ git diff
+diff --cc README.md
+index 20c20f5,559bd65..0000000
+--- a/README.md
++++ b/README.md
+@@@ -42,6 -42,6 +42,11 @@@ uv run python server.py          # spea
+  
+  | Workstream | Status |
+  |---|---|
+++<<<<<<< HEAD
+ +| Skill tests | 7 trigger prompts + 3 description variants (tests/skill-triggers) |
+ +| MCP server tests | not started |
+++=======
++ | Skill tests | not started (owned by feature/skill-tests) |
++ | MCP server tests | SDK client test + raw JSON-RPC trace (mcp-server/tests) |
+++>>>>>>> feature/mcp-server
+  | Hook path fix | not started |
+[exit 0]
+
+--- README.md around the conflict ---
+## Project status
+
+| Workstream | Status |
+|---|---|
+<<<<<<< HEAD
+| Skill tests | 7 trigger prompts + 3 description variants (tests/skill-triggers) |
+| MCP server tests | not started |
+=======
+| Skill tests | not started (owned by feature/skill-tests) |
+| MCP server tests | SDK client test + raw JSON-RPC trace (mcp-server/tests) |
+>>>>>>> feature/mcp-server
+| Hook path fix | not started |
+### Resolution: kept the real status from BOTH sides (HEAD had the skill-tests row, feature/mcp-server had the server row) and updated the hook row, which neither side had touched.
+$ grep -c <<<<<<<\|>>>>>>> README.md
+0
+[exit 1]
+
+$ git add README.md
+[exit 0]
+
+$ git commit -m Merge feature/mcp-server (resolve README status conflict by hand) -m Co-Authored-By: Claude Opus 5.5 <noreply@anthropic.com>
+[main 477c11d] Merge feature/mcp-server (resolve README status conflict by hand)
+[exit 0]
+
+### History graph
+$ git log --graph --oneline --decorate --all
+*   477c11d (HEAD -> main) Merge feature/mcp-server (resolve README status conflict by hand)
+|\  
+| * 6293471 (feature/mcp-server) Add MCP server stdio trace and SDK client tests
+* |   03365bf Merge feature/skill-tests
+|\ \  
+| * | b6a0ec9 (feature/skill-tests) Add Skill trigger test prompts and runner
+| |/  
+* |   d78c48b Merge bugfix/hook-path
+|\ \  
+| |/  
+|/|   
+| * 271e3d6 (bugfix/hook-path) Fix hook path check: resolve absolute paths, block traversal and case variants
+|/  
+* 3777309 Add campus-helpdesk plugin: timetable Skill, command, hook, MCP server
+[exit 0]
+

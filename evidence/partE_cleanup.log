@@ -1,0 +1,102 @@
+### Post-merge checks on main
+$ python3 plugins/campus-helpdesk/hooks/test_protect_records.py
+PASS  exit=2 expected=2  absolute path into records/
+PASS  exit=2 expected=2  relative path into records/
+PASS  exit=2 expected=2  '..' traversal into records/
+PASS  exit=2 expected=2  case variant on case-insensitive FS
+PASS  exit=0 expected=0  ordinary file
+PASS  exit=0 expected=0  name merely starts with 'records'
+PASS  exit=2 expected=2  timetable CSV
+ALL HOOK CHECKS PASSED
+[exit 0]
+
+$ uv run python tests/test_server.py
+[campus-helpdesk] get_timetable batch=CSE-A day=Monday -> 3 rows
+[campus-helpdesk] get_fee_status id=NU2024CS042 -> UNPAID
+[campus-helpdesk] Tool 'get_fee_status' rejected arguments: ['student_id']
+[campus-helpdesk] Tool 'get_fee_status' failed: "Error executing tool get_fee_status: No fee record found for student ID 'NU2099CS999'."
+[campus-helpdesk] get_timetable batch=CSE-A day=Monday -> 3 rows
+[campus-helpdesk] get_fee_status id=NU2024CS042 -> UNPAID
+[campus-helpdesk] Tool 'get_fee_status' rejected arguments: ['student_id']
+[campus-helpdesk] Tool 'get_fee_status' failed: "Error executing tool get_fee_status: No fee record found for student ID 'NU2099CS999'."
+--- mode=legacy  negotiated protocol=2025-11-25
+tools/list -> ['get_fee_status', 'get_timetable']
+get_timetable(CSE-A, Monday) -> count 3 ['CS301', 'CS303', 'CS303L']
+get_fee_status(NU2024CS042) -> UNPAID
+get_fee_status('abc') -> isError True
+get_fee_status(NU2099CS999) -> isError True | Error executing tool get_fee_status: No fee record found for student ID 'NU2099CS999'.
+resources/list -> ['campus://hostel/rules']
+resources/read -> # Nimbus University Hostel Rules (mock document)
+--- mode=auto  negotiated protocol=2026-07-28
+tools/list -> ['get_fee_status', 'get_timetable']
+get_timetable(CSE-A, Monday) -> count 3 ['CS301', 'CS303', 'CS303L']
+get_fee_status(NU2024CS042) -> UNPAID
+get_fee_status('abc') -> isError True
+get_fee_status(NU2099CS999) -> isError True | Error executing tool get_fee_status: No fee record found for student ID 'NU2099CS999'.
+resources/list -> ['campus://hostel/rules']
+resources/read -> # Nimbus University Hostel Rules (mock document)
+ALL CHECKS PASSED
+[exit 0]
+
+### E3(c). Safe cleanup of worktrees
+$ git worktree remove ../campus-helpdesk-wt/skill-tests
+fatal: '../campus-helpdesk-wt/skill-tests' contains modified or untracked files, use --force to delete it
+[exit 128]
+
+(refused: git will not delete a worktree with untracked/modified files. Inspect first.)
+$ git -C ../campus-helpdesk-wt/skill-tests status --short
+?? untracked-notes.txt
+[exit 0]
+
+$ git worktree remove ../campus-helpdesk-wt/skill-tests
+[exit 0]
+
+$ git worktree lock --reason demo: on a USB drive ../campus-helpdesk-wt/hook-path
+[exit 0]
+
+$ git worktree remove ../campus-helpdesk-wt/hook-path
+fatal: cannot remove a locked working tree, lock reason: demo: on a USB drive
+use 'remove -f -f' to override or unlock first
+[exit 128]
+
+$ git worktree unlock ../campus-helpdesk-wt/hook-path
+[exit 0]
+
+$ git worktree remove ../campus-helpdesk-wt/hook-path
+[exit 0]
+
+Simulate a stale worktree: its directory disappears without 'git worktree remove' (moved away here)
+$ git worktree list
+/Users/anuragkharke/Desktop/campus-helpdesk                477c11d [main]
+/Users/anuragkharke/Desktop/campus-helpdesk-wt/mcp-server  6293471 [feature/mcp-server] prunable
+[exit 0]
+
+$ git worktree prune --dry-run -v
+Removing worktrees/mcp-server: gitdir file points to non-existent location
+[exit 0]
+
+$ git worktree prune -v
+Removing worktrees/mcp-server: gitdir file points to non-existent location
+[exit 0]
+
+$ git worktree list
+/Users/anuragkharke/Desktop/campus-helpdesk  477c11d [main]
+[exit 0]
+
+$ git branch --merged main
+  bugfix/hook-path
+  feature/mcp-server
+  feature/skill-tests
+* main
+[exit 0]
+
+$ git branch -d feature/skill-tests feature/mcp-server bugfix/hook-path
+Deleted branch feature/skill-tests (was b6a0ec9).
+Deleted branch feature/mcp-server (was 6293471).
+Deleted branch bugfix/hook-path (was 271e3d6).
+[exit 0]
+
+$ git branch
+* main
+[exit 0]
+

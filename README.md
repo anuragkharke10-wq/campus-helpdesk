@@ -38,6 +38,42 @@ uv sync
 uv run python server.py          # speaks MCP JSON-RPC on stdin/stdout; logs go to stderr
 ```
 
+Tests and traces (run from `plugins/campus-helpdesk/mcp-server`):
+
+```bash
+uv run python tests/test_server.py                                    # official SDK client, both protocol modes
+uv run python tests/trace_stdio.py ../../../evidence/partD_mcp_trace.jsonl   # raw JSON-RPC trace
+npx @modelcontextprotocol/inspector --cli uv run python server.py --method tools/list
+```
+
+Tools: `get_timetable(batch, day)`, `get_fee_status(student_id)`. Resource: `campus://hostel/rules`.
+
+## Install the plugin in Claude Code
+
+From the folder that contains this repository:
+
+```bash
+claude plugin validate ./campus-helpdesk
+claude plugin marketplace add ./campus-helpdesk
+claude plugin install campus-helpdesk@nimbus-campus-tools
+claude plugin list
+claude plugin details campus-helpdesk
+```
+
+In a session, `/campus-helpdesk:timetable CSE-A Monday` runs the command and `/mcp` shows `plugin:campus-helpdesk:campus`.
+Remove it with `claude plugin uninstall campus-helpdesk@nimbus-campus-tools` and `claude plugin marketplace remove nimbus-campus-tools`.
+The MCP entry runs `uv`, so `uv` must be on your `PATH`.
+
+## Other checks
+
+```bash
+python3 plugins/campus-helpdesk/skills/timetable-helper/scripts/lookup.py --batch CSE-A --day Monday
+python3 plugins/campus-helpdesk/hooks/test_protect_records.py
+python3 tests/skill-triggers/run_trigger_tests.py --variant v3-final      # needs the Claude Code CLI, logged in
+```
+
+The report, prompt log and source list are in `docs/`.
+
 ## Project status
 
 | Workstream | Status |
