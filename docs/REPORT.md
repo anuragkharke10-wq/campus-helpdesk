@@ -85,7 +85,7 @@ Harness: `tests/skill-triggers/run_trigger_tests.py` with prompts in `tests/skil
 `claude -p "<prompt>" --plugin-dir <copy-of-plugin> --output-format stream-json --verbose --max-turns 4 --no-session-persistence --allowedTools Skill "Bash(python3:*)" Read`
 (all flags from [S17]). It marks a prompt "triggered" when the stream contains a `Skill` tool call naming `timetable-helper`. Raw logs go to `evidence/partB_triggers/<variant>/`.
 
-Runs: Claude Code 2.1.327, Pro plan, 18 Nov 2026. v3-final was run twice with identical trigger results, and v1-broad was also run twice. Logs and `results.csv` per variant are in `evidence/partB_triggers/`. ADV was also re-run with `--max-turns 8` (`v3-final_ADV_maxturns8/`). Every verdict below was checked against the raw stream log, not just the CSV.
+Runs: Claude Code 2.1.327, Pro plan, 18 Nov 2026. v3-final and v2-narrow were each run twice with identical trigger results; v1-broad was run twice and differed only on ADV. Logs and `results.csv` per variant are in `evidence/partB_triggers/`. ADV was also re-run with `--max-turns 8` (`v3-final_ADV_maxturns8/`). Every verdict below was checked against the raw stream log, not just the CSV.
 
 | ID | Type | Prompt | Expected | Observed (v3-final) | Why |
 |---|---|---|---|---|---|

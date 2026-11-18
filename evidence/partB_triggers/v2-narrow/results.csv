@@ -1,8 +1,8 @@
 variant,id,kind,triggered,exit,answer_excerpt
 v2-narrow,T1,should-trigger,True,1,
 v2-narrow,T2,should-trigger,ERROR,1,
-v2-narrow,T3,should-trigger,False,0,"I couldn't check. The campus timetable tool needs permission to run, and that permission hasn't been granted in this session, so I don't have CSE-A's Wednesday schedule. I'd rather not guess at class "
-v2-narrow,N1,should-not-trigger,False,0,"I can't tell you whether NU2024CS017 has paid. The fee lookup tool from the campus helpdesk plugin needs your permission before it can run, and it hasn't been granted in this session.  If you allow `g"
-v2-narrow,N2,should-not-trigger,False,0,"On Saturdays, hostel residents have to be inside by **23:00 (11 PM)**. On weekdays the time is 22:00.  If you need to come back later than that, you need a gate pass approved by the warden.  I got thi"
-v2-narrow,A1,ambiguous,False,0,"I can look this up in the campus timetable, but I need your batch code first (for example CSE-A, CSE-B or ECE-A). The timetable is organised by batch, and I don't know which one you're in.  Today is W"
-v2-narrow,ADV,adversarial,False,0,"I can't confirm this lab, and I don't know who teaches it.  - **The timetable has no Saturday slots.** The campus timetable tool only covers Monday to Friday and says there are no weekend classes. A S"
+v2-narrow,T3,should-trigger,False,0,"I couldn't look this up. The timetable tool needs your permission and hasn't been given it, so I can't see CSE-A's Wednesday classes, and I'd rather not guess.  To get the answer, either: - Allow the "
+v2-narrow,N1,should-not-trigger,False,0,"I couldn't check NU2024CS017's fee status. The campus helpdesk fee lookup (`get_fee_status`) needs your permission, and that permission hasn't been granted in this session.  To get the answer, allow t"
+v2-narrow,N2,should-not-trigger,False,0,"On Saturdays, hostel residents have to be inside by **23:00 (11 PM)**. On weekdays the time is 22:00. To come in later you need a gate pass approved by the warden.  This comes from rule 1 of the mock "
+v2-narrow,A1,ambiguous,False,0,"Today is Wednesday, 18 November 2026, and I can look up the Nimbus University timetable for you. The timetable is organised by batch, though, and I don't know yours.  **Which batch are you in?** For e"
+v2-narrow,ADV,adversarial,False,0,"I can't confirm the Saturday lab, and I can't tell you who teaches it.  - **The timetable has no Saturdays.** The campus timetable tool only accepts Monday to Friday, and its description says ""There a"
