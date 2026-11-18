@@ -1,0 +1,97 @@
+$ python3 scripts/lookup.py --list-batches
+{"batches": ["CSE-A", "CSE-B", "ECE-A"]}
+[exit code 0]
+
+$ python3 scripts/lookup.py --batch cse-a --day mon
+{
+  "batch": "CSE-A",
+  "count": 3,
+  "rows": [
+    {
+      "batch": "CSE-A",
+      "day": "Monday",
+      "start": "09:00",
+      "end": "10:00",
+      "course_code": "CS301",
+      "course_name": "Operating Systems",
+      "faculty": "Dr. R. Iyer",
+      "room": "LH-101",
+      "session_type": "Lecture"
+    },
+    {
+      "batch": "CSE-A",
+      "day": "Monday",
+      "start": "10:00",
+      "end": "11:00",
+      "course_code": "CS303",
+      "course_name": "Database Systems",
+      "faculty": "Prof. S. Kulkarni",
+      "room": "LH-101",
+      "session_type": "Lecture"
+    },
+    {
+      "batch": "CSE-A",
+      "day": "Monday",
+      "start": "11:15",
+      "end": "13:15",
+      "course_code": "CS303L",
+      "course_name": "Database Systems Lab",
+      "faculty": "Prof. S. Kulkarni",
+      "room": "LAB-2",
+      "session_type": "Lab"
+    }
+  ]
+}
+[exit code 0]
+
+$ python3 scripts/lookup.py --batch CSE-B --course networks
+{
+  "batch": "CSE-B",
+  "count": 2,
+  "rows": [
+    {
+      "batch": "CSE-B",
+      "day": "Monday",
+      "start": "09:00",
+      "end": "10:00",
+      "course_code": "CS305",
+      "course_name": "Computer Networks",
+      "faculty": "Dr. A. Menon",
+      "room": "LH-102",
+      "session_type": "Lecture"
+    },
+    {
+      "batch": "CSE-B",
+      "day": "Thursday",
+      "start": "10:00",
+      "end": "11:00",
+      "course_code": "CS305",
+      "course_name": "Computer Networks",
+      "faculty": "Dr. A. Menon",
+      "room": "LH-102",
+      "session_type": "Lecture"
+    }
+  ]
+}
+[exit code 0]
+
+$ python3 scripts/lookup.py --batch CSE-A --course quantum
+{
+  "batch": "CSE-A",
+  "count": 0,
+  "rows": []
+}
+[exit code 3]
+
+$ python3 scripts/lookup.py --batch CSE-A --day Saturday
+{
+  "batch": "CSE-A",
+  "count": 0,
+  "rows": []
+}
+[exit code 3]
+
+$ python3 scripts/lookup.py --batch MECH-A
+{"error": "unknown batch 'MECH-A'", "valid_batches": ["CSE-A", "CSE-B", "ECE-A"]}
+[exit code 2]
+

@@ -1,0 +1,6 @@
+[project]
+name = "campus-helpdesk-mcp"
+version = "0.1.0"
+description = "Mock Campus Helpdesk MCP server (stdio) for Assignment 8"
+requires-python = ">=3.10"
+dependencies = ["mcp==2.3.0"]

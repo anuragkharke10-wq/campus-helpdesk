@@ -1,0 +1,14 @@
+{
+  "name": "nimbus-campus-tools",
+  "description": "Assignment 8 marketplace: Campus Helpdesk plugin for Nimbus Labs (mock data only)",
+  "owner": {
+    "name": "Anurag Kharke"
+  },
+  "plugins": [
+    {
+      "name": "campus-helpdesk",
+      "source": "./plugins/campus-helpdesk",
+      "description": "Timetable Skill, /campus-helpdesk:timetable command, protected-records hook and a mock campus MCP server"
+    }
+  ]
+}

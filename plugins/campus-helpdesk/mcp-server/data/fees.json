@@ -1,0 +1,9 @@
+{
+  "_note": "MOCK DATA ONLY - invented students for Assignment 8. No real personal data.",
+  "students": {
+    "NU2024CS001": {"name": "Test Student A", "batch": "CSE-A", "semester": 5, "total_due": 92000, "paid": 92000, "receipt_no": "RCPT-24-0001", "last_payment": "2026-07-14"},
+    "NU2024CS017": {"name": "Test Student B", "batch": "CSE-A", "semester": 5, "total_due": 92000, "paid": 46000, "receipt_no": "RCPT-24-0117", "last_payment": "2026-07-20"},
+    "NU2024CS042": {"name": "Test Student C", "batch": "CSE-B", "semester": 5, "total_due": 92000, "paid": 0, "receipt_no": null, "last_payment": null},
+    "NU2024EC008": {"name": "Test Student D", "batch": "ECE-A", "semester": 5, "total_due": 88000, "paid": 88000, "receipt_no": "RCPT-24-0208", "last_payment": "2026-07-11"}
+  }
+}

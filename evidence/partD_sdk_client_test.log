@@ -1,0 +1,25 @@
+[campus-helpdesk] get_timetable batch=CSE-A day=Monday -> 3 rows
+[campus-helpdesk] get_fee_status id=NU2024CS042 -> UNPAID
+[campus-helpdesk] Tool 'get_fee_status' rejected arguments: ['student_id']
+[campus-helpdesk] Tool 'get_fee_status' failed: "Error executing tool get_fee_status: No fee record found for student ID 'NU2099CS999'."
+[campus-helpdesk] get_timetable batch=CSE-A day=Monday -> 3 rows
+[campus-helpdesk] get_fee_status id=NU2024CS042 -> UNPAID
+[campus-helpdesk] Tool 'get_fee_status' rejected arguments: ['student_id']
+[campus-helpdesk] Tool 'get_fee_status' failed: "Error executing tool get_fee_status: No fee record found for student ID 'NU2099CS999'."
+--- mode=legacy  negotiated protocol=2025-11-25
+tools/list -> ['get_fee_status', 'get_timetable']
+get_timetable(CSE-A, Monday) -> count 3 ['CS301', 'CS303', 'CS303L']
+get_fee_status(NU2024CS042) -> UNPAID
+get_fee_status('abc') -> isError True
+get_fee_status(NU2099CS999) -> isError True | Error executing tool get_fee_status: No fee record found for student ID 'NU2099CS999'.
+resources/list -> ['campus://hostel/rules']
+resources/read -> # Nimbus University Hostel Rules (mock document)
+--- mode=auto  negotiated protocol=2026-07-28
+tools/list -> ['get_fee_status', 'get_timetable']
+get_timetable(CSE-A, Monday) -> count 3 ['CS301', 'CS303', 'CS303L']
+get_fee_status(NU2024CS042) -> UNPAID
+get_fee_status('abc') -> isError True
+get_fee_status(NU2099CS999) -> isError True | Error executing tool get_fee_status: No fee record found for student ID 'NU2099CS999'.
+resources/list -> ['campus://hostel/rules']
+resources/read -> # Nimbus University Hostel Rules (mock document)
+ALL CHECKS PASSED

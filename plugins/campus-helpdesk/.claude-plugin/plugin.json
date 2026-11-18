@@ -1,0 +1,11 @@
+{
+  "name": "campus-helpdesk",
+  "displayName": "Campus Helpdesk",
+  "version": "0.1.0",
+  "description": "Campus Helpdesk Agent toolkit: timetable-helper Skill, a timetable slash command, a hook that blocks writes to protected student records, and a stdio MCP server for timetables, fee status and hostel rules (mock data).",
+  "author": {
+    "name": "Anurag Kharke"
+  },
+  "license": "MIT",
+  "keywords": ["campus", "helpdesk", "timetable", "mcp", "assignment"]
+}

@@ -1,0 +1,28 @@
+batch,day,start,end,course_code,course_name,faculty,room,session_type
+CSE-A,Monday,09:00,10:00,CS301,Operating Systems,Dr. R. Iyer,LH-101,Lecture
+CSE-A,Monday,10:00,11:00,CS303,Database Systems,Prof. S. Kulkarni,LH-101,Lecture
+CSE-A,Monday,11:15,13:15,CS303L,Database Systems Lab,Prof. S. Kulkarni,LAB-2,Lab
+CSE-A,Tuesday,09:00,10:00,CS305,Computer Networks,Dr. A. Menon,LH-102,Lecture
+CSE-A,Tuesday,10:00,11:00,CS301,Operating Systems,Dr. R. Iyer,LH-101,Lecture
+CSE-A,Tuesday,14:00,15:00,HS201,Professional Ethics,Ms. P. Rao,LH-204,Lecture
+CSE-A,Wednesday,09:00,10:00,CS307,AI Tools and Prompt Engineering,Dr. N. Shah,LH-103,Lecture
+CSE-A,Wednesday,10:00,12:00,CS307L,AI Tools Lab,Dr. N. Shah,LAB-4,Lab
+CSE-A,Thursday,09:00,10:00,CS303,Database Systems,Prof. S. Kulkarni,LH-101,Lecture
+CSE-A,Thursday,11:00,12:00,CS305,Computer Networks,Dr. A. Menon,LH-102,Lecture
+CSE-A,Friday,09:00,10:00,CS307,AI Tools and Prompt Engineering,Dr. N. Shah,LH-103,Lecture
+CSE-A,Friday,10:00,11:00,CS399,Mentoring Hour,Dr. R. Iyer,LH-101,Tutorial
+CSE-B,Monday,09:00,10:00,CS305,Computer Networks,Dr. A. Menon,LH-102,Lecture
+CSE-B,Monday,10:00,11:00,CS301,Operating Systems,Dr. K. Das,LH-105,Lecture
+CSE-B,Tuesday,09:00,11:00,CS301L,Operating Systems Lab,Dr. K. Das,LAB-1,Lab
+CSE-B,Tuesday,11:15,12:15,CS303,Database Systems,Prof. S. Kulkarni,LH-105,Lecture
+CSE-B,Wednesday,09:00,10:00,CS307,AI Tools and Prompt Engineering,Dr. N. Shah,LH-103,Lecture
+CSE-B,Wednesday,14:00,15:00,HS201,Professional Ethics,Ms. P. Rao,LH-204,Lecture
+CSE-B,Thursday,10:00,11:00,CS305,Computer Networks,Dr. A. Menon,LH-102,Lecture
+CSE-B,Thursday,11:00,13:00,CS307L,AI Tools Lab,Dr. N. Shah,LAB-4,Lab
+CSE-B,Friday,09:00,10:00,CS303,Database Systems,Prof. S. Kulkarni,LH-105,Lecture
+ECE-A,Monday,09:00,10:00,EC301,Signals and Systems,Dr. V. Pillai,LH-201,Lecture
+ECE-A,Monday,10:00,11:00,EC303,Analog Circuits,Dr. M. Joshi,LH-201,Lecture
+ECE-A,Tuesday,09:00,11:00,EC303L,Analog Circuits Lab,Dr. M. Joshi,ECE-LAB-1,Lab
+ECE-A,Wednesday,10:00,11:00,EC305,Digital Communication,Dr. T. Bose,LH-202,Lecture
+ECE-A,Thursday,09:00,10:00,EC301,Signals and Systems,Dr. V. Pillai,LH-201,Lecture
+ECE-A,Friday,11:00,12:00,HS201,Professional Ethics,Ms. P. Rao,LH-204,Lecture

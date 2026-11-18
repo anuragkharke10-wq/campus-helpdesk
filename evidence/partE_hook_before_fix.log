@@ -1,0 +1,4 @@
+/Users/demo/campus/records/fees.json -> exit 0
+Blocked by campus-helpdesk: 'records/fees.json' is a protected student-records path.
+records/fees.json -> exit 2
+/Users/demo/campus/notes.md -> exit 0

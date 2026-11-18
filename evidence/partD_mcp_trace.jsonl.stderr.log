@@ -1,0 +1,6 @@
+[campus-helpdesk] get_timetable batch=CSE-A day=Monday -> 3 rows
+[campus-helpdesk] get_fee_status id=NU2024CS017 -> PARTIAL
+[campus-helpdesk] Tool 'get_fee_status' rejected arguments: ['student_id']
+[campus-helpdesk] Tool 'get_timetable' failed: "Error executing tool get_timetable: Unknown batch 'MECH-A'. Valid batches: CSE-A, CSE-B, ECE-A."
+[campus-helpdesk] Tool 'get_timetable' rejected arguments: ['day']
+[campus-helpdesk] Tool 'delete_student' failed: 'Unknown tool: delete_student'
