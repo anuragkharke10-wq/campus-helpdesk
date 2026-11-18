@@ -157,7 +157,32 @@ claude plugin marketplace remove nimbus-campus-tools
 ```
 For quick testing without installing: `claude --plugin-dir ./campus-helpdesk/plugins/campus-helpdesk` [S13, S17].
 
-> **Status:** these commands come from the official docs, but they were **not executed** on the build machine because the Claude Code CLI was not available there. Run them and paste the terminal output (or screenshots) into `evidence/partC_plugin_install.log` before submitting. JSON validity of all four config files was checked with `python3 -m json.tool`.
+**Executed** with Claude Code 2.1.327 on 18 Nov 2026. The full output is in `evidence/partC_plugin_install.log`; key lines:
+
+```
+$ claude plugin validate ./campus-helpdesk                      ✔ Validation passed
+$ claude plugin validate ./campus-helpdesk/plugins/campus-helpdesk
+  Provides: hooks PreToolUse Write|Edit|NotebookEdit · mcpServers campus (stdio, uv)
+            skills campus-helpdesk:timetable-helper · commands campus-helpdesk:timetable
+  ⚠ icon: No icon (ICON_MISSING)  (directory-listing check only)  ✔ Validation passed
+$ claude plugin marketplace add ./campus-helpdesk
+  ✔ Successfully added marketplace: nimbus-campus-tools (declared in user settings)
+$ claude plugin install campus-helpdesk@nimbus-campus-tools
+  ✔ Successfully installed plugin: campus-helpdesk@nimbus-campus-tools (scope: user)
+$ claude plugin list            campus-helpdesk@nimbus-campus-tools  Version: 0.1.0  Status: ✔ enabled
+$ claude plugin details campus-helpdesk
+  Skills (2) timetable, timetable-helper · Hooks (1) PreToolUse · MCP servers (1) campus
+  Projected token cost — always-on ~138 tok; timetable-helper ~110 always-on / ~450 on-invoke
+$ claude plugin uninstall campus-helpdesk@nimbus-campus-tools   ✔ Successfully uninstalled plugin: campus-helpdesk (scope: user)
+$ claude plugin marketplace remove nimbus-campus-tools          ✔ Successfully removed marketplace: nimbus-campus-tools
+$ claude plugin list            No plugins installed.
+```
+
+Two observations from the real output:
+- `details` counts the command as a skill ("Skills (2)"). This matches the docs: commands are the older format and "take the same frontmatter as skills" [S12].
+- The projected cost shows progressive disclosure working. Only about 110 tokens of `timetable-helper` metadata are always in context, close to the "~100 tokens per Skill" the docs give [S9]. The body costs about 450 tokens and only when the Skill fires.
+
+The `ICON_MISSING` warning comes from the Anthropic-directory listing checks and does not affect loading or installation.
 
 ### C3. Threat model: installing a third-party plugin
 

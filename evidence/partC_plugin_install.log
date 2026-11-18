@@ -1,0 +1,73 @@
+# Part C2 – run on 2026-11-18 14:02 IST, 2.1.327 (Claude Code)
+$ claude plugin validate ./campus-helpdesk
+Validating marketplace manifest: /Users/anuragkharke/Desktop/campus-helpdesk/.claude-plugin/marketplace.json
+
+✔ Validation passed
+[exit 0]
+
+$ claude plugin marketplace add ./campus-helpdesk
+Adding marketplace…✔ Successfully added marketplace: nimbus-campus-tools (declared in user settings)
+[exit 0]
+
+$ claude plugin marketplace list
+Configured marketplaces:
+
+  ❯ anthropic-plugin-directory
+    Source: Built in (Anthropic Directory)
+
+  ❯ nimbus-campus-tools
+    Source: Folder (/Users/anuragkharke/Desktop/campus-helpdesk)
+
+[exit 0]
+
+$ claude plugin install campus-helpdesk@nimbus-campus-tools
+Installing plugin "campus-helpdesk@nimbus-campus-tools"...✔ Successfully installed plugin: campus-helpdesk@nimbus-campus-tools (scope: user)
+[exit 0]
+
+$ claude plugin list
+Installed plugins:
+
+  ❯ campus-helpdesk@nimbus-campus-tools
+    Version: 0.1.0
+    Read from: /Users/anuragkharke/Desktop/campus-helpdesk/plugins/campus-helpdesk
+    Scope: user
+    Status: ✔ enabled
+
+[exit 0]
+
+$ claude plugin details campus-helpdesk
+Campus Helpdesk (campus-helpdesk) 0.1.0
+  Description: Timetable Skill, /campus-helpdesk:timetable command, protected-records hook and a mock campus MCP server
+  Source: campus-helpdesk@nimbus-campus-tools
+
+Component inventory
+  Skills (2)  timetable, timetable-helper
+  Agents (0)
+  Hooks (1)  PreToolUse  (harness-only — no model context cost)
+  MCP servers (1)  campus  (tool schemas resolved at runtime; not counted)
+  LSP servers (0)
+
+Projected token cost
+  Always-on:   ~138 tok   added to every session
+
+Per-component (rounded)
+  component         always-on  on-invoke
+  timetable-helper       ~110       ~450
+  timetable               ~20       ~100
+
+  On-invoke cost is paid each time a skill or agent fires.
+  Token counts are estimates and may differ from actual usage.
+[exit 0]
+
+$ claude plugin uninstall campus-helpdesk@nimbus-campus-tools
+✔ Successfully uninstalled plugin: campus-helpdesk (scope: user)
+[exit 0]
+
+$ claude plugin marketplace remove nimbus-campus-tools
+✔ Successfully removed marketplace: nimbus-campus-tools
+[exit 0]
+
+$ claude plugin list
+No plugins installed. Use `claude plugin install` to install a plugin.
+[exit 0]
+

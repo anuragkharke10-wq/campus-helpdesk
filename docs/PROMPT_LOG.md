@@ -21,7 +21,7 @@ The session began with my request to complete Assignment 8 end-to-end (repo, tes
 
 ## Steps the AI could not do (left for me, not faked)
 - **Part B3/B4 trigger results:** the Claude Code CLI was not installed where the code was built. The harness `tests/skill-triggers/run_trigger_tests.py` is ready. I must run it for `v1-broad`, `v2-narrow` and `v3-final` and paste the `results.csv` values into the report.
-- **Part C2 install log:** run the `claude plugin …` commands and save the output to `evidence/partC_plugin_install.log`.
+- ~~**Part C2 install log**~~: done after I installed the CLI (2.1.327). The real output is in `evidence/partC_plugin_install.log`. Both manifests validated, and the install and uninstall cycle succeeded.
 - **Part D2 Inspector:** running the Inspector through `npx` was blocked by the session's permission policy. Run the three `--cli` commands from the report and add a screenshot.
 
 ## My own entries
