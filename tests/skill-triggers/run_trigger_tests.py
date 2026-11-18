@@ -77,11 +77,18 @@ def main() -> int:
             proc = subprocess.run(cmd, capture_output=True, text=True, cwd=tmp, timeout=300)
             (out_dir / f"{p['id']}.jsonl").write_text(proc.stdout)
             lines = proc.stdout.splitlines()
-            final = next((json.loads(l).get("result", "") for l in reversed(lines)
-                          if l.startswith("{") and '"type":"result"' in l.replace(" ", "")), "")
+            result = next((json.loads(l) for l in reversed(lines)
+                           if l.startswith("{") and '"type":"result"' in l.replace(" ", "")), {})
+            final = result.get("result", "")
+            if result.get("is_error") and not skill_called(lines):
+                # e.g. an expired login: not a valid "did not trigger" observation
+                print(f"{p['id']}: run failed: {final[:200]}", file=sys.stderr)
+                if "authenticate" in final.lower():
+                    print("Log in with `claude auth login`, then re-run.", file=sys.stderr)
+                    return 1
             row = {"variant": args.variant, "id": p["id"], "kind": p["kind"],
-                   "triggered": skill_called(lines), "exit": proc.returncode,
-                   "answer_excerpt": final[:200].replace("\n", " ")}
+                   "triggered": "ERROR" if result.get("is_error") and not skill_called(lines) else skill_called(lines),
+                   "exit": proc.returncode, "answer_excerpt": final[:200].replace("\n", " ")}
             results.append(row)
             print(f"{row['id']:4} {row['kind']:20} triggered={row['triggered']}  exit={row['exit']}")
     if results:
