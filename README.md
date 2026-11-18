@@ -42,6 +42,6 @@ uv run python server.py          # speaks MCP JSON-RPC on stdin/stdout; logs go 
 
 | Workstream | Status |
 |---|---|
-| Skill tests | not started |
+| Skill tests | 7 trigger prompts + 3 description variants (tests/skill-triggers) |
 | MCP server tests | not started |
 | Hook path fix | not started |
