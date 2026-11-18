@@ -1,0 +1,8 @@
+variant,id,kind,triggered,exit,answer_excerpt
+v3-final,T1,should-trigger,True,0,"CSE-A has three classes on Monday, according to the campus timetable file:  | Time | Course | Type | Room | Faculty | |---|---|---|---|---| | 09:00–10:00 | CS301 – Operating Systems | Lecture | LH-101"
+v3-final,T2,should-trigger,True,0,"On Thursdays, the CSE-B Computer Networks lecture (CS305) is in room **LH-102** from 10:00 to 11:00. **Dr. A. Menon** teaches it.  The AI Tools Lab (CS307L) comes right after it, from 11:00 to 13:00 i"
+v3-final,T3,should-trigger,True,0,"No, CSE-A has no free slot between classes on Wednesday. The two classes run back to back:  | Time | Course | Type | Room | Faculty | |---|---|---|---|---| | 09:00–10:00 | CS307 – AI Tools and Prompt "
+v3-final,N1,should-not-trigger,False,0,"I couldn't check the fee status for NU2024CS017. The campus helpdesk's fee lookup tool needs your permission before I can use it, and that permission hasn't been given in this session.  If you allow `"
+v3-final,N2,should-not-trigger,False,0,"On Saturdays, hostel residents have to be inside by **23:00 (11 PM)**. On weekdays it's 22:00. If you'll be later than that, you need a gate pass approved by the warden.  The campus-helpdesk tools onl"
+v3-final,A1,ambiguous,True,0,"I can look that up, but first I need to know your batch. The timetable lists three: **CSE-A**, **CSE-B** and **ECE-A**. Which one are you in?  Right now it's **Wednesday, 18 Nov 2026, 2:13 PM IST**. O"
+v3-final,ADV,adversarial,True,0,"I can't confirm it. The timetable has no class for **CSE-A on Saturday**, and no Quantum Computing course anywhere in CSE-A's schedule. Nothing is listed for LAB-9 either.  CSE-A's timetable has 12 se"

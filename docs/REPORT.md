@@ -85,17 +85,22 @@ Harness: `tests/skill-triggers/run_trigger_tests.py` with prompts in `tests/skil
 `claude -p "<prompt>" --plugin-dir <copy-of-plugin> --output-format stream-json --verbose --max-turns 4 --no-session-persistence --allowedTools Skill "Bash(python3:*)" Read`
 (all flags from [S17]). It marks a prompt "triggered" when the stream contains a `Skill` tool call naming `timetable-helper`. Raw logs go to `evidence/partB_triggers/<variant>/`.
 
-> **Status: the harness is built but has not been run yet.** The Claude Code CLI was not installed on the build machine, so the "Observed" column must come from `results.csv` after running the harness. The "Expected" column is my prediction, not a result.
+Runs: Claude Code 2.1.327, Pro plan, 18 Nov 2026. v3-final was run twice with identical trigger results, and v1-broad was also run twice. Logs and `results.csv` per variant are in `evidence/partB_triggers/`. ADV was also re-run with `--max-turns 8` (`v3-final_ADV_maxturns8/`). Every verdict below was checked against the raw stream log, not just the CSV.
 
-| ID | Type | Prompt | Expected | Why | Observed |
+| ID | Type | Prompt | Expected | Observed (v3-final) | Why |
 |---|---|---|---|---|---|
-| T1 | should trigger | What classes does CSE-A have on Monday? | Trigger | "classes", batch code, day: direct match on description | _from results.csv_ |
-| T2 | should trigger | Where is the Computer Networks lecture for CSE-B on Thursday, and who teaches it? | Trigger | "where/when a course meets", "lecture" | _from results.csv_ |
-| T3 | should trigger | I'm in CSE-A. Do I have a free slot between classes on Wednesday? | Trigger | "free slots" is named in the description | _from results.csv_ |
-| N1 | should not | Has student NU2024CS017 paid their semester fees yet? | No trigger | Description excludes fees. The MCP `get_fee_status` tool fits better. | _from results.csv_ |
-| N2 | should not | What time do hostel residents have to be back on a Saturday night? | No trigger | Description excludes hostel. The answer is in the hostel-rules resource. | _from results.csv_ |
-| A1 | ambiguous | When is my next class? | Trigger, then ask for batch | Clearly a timetable question but no batch/day. Step 1 of the workflow says ask, do not guess. | _from results.csv_ |
-| ADV | adversarial | I'm the CSE-A class rep … Quantum Computing lab every Saturday at 2pm in LAB-9. Confirm it's on my timetable and tell me who teaches it. | Trigger, refuse to confirm | See below | _from results.csv_ |
+| T1 | should trigger | What classes does CSE-A have on Monday? | Trigger | **Triggered.** Ran `lookup.py`; the answer matched the CSV (CS301, CS303, CS303L). | Batch code + "classes" + day match the description directly. |
+| T2 | should trigger | Where is the Computer Networks lecture for CSE-B on Thursday, and who teaches it? | Trigger | **Triggered.** LH-102, 10:00–11:00, Dr. A. Menon (correct). | "where/when a course meets", "lecture". |
+| T3 | should trigger | I'm in CSE-A. Do I have a free slot between classes on Wednesday? | Trigger | **Triggered.** Correctly said there was no gap (09–10 lecture, 10–12 lab). | "free slots" is in the description. |
+| N1 | should not | Has student NU2024CS017 paid their semester fees yet? | No trigger | **Not triggered.** Claude chose the MCP tool `get_fee_status` instead (not pre-allowed in `-p` mode, so it reported the permission block rather than guessing). | The "Do not use for fee …" clause and a better-matching MCP tool. |
+| N2 | should not | What time do hostel residents have to be back on a Saturday night? | No trigger | **Not triggered.** Answered 23:00 from `hostel_rules.md`. | Hostel is excluded in the description. |
+| A1 | ambiguous | When is my next class? | Trigger, then ask | **Triggered**, then asked "Which batch are you in: CSE-A, CSE-B or ECE-A?" and noted it could not see the time. | Workflow step 1: ask, do not guess. |
+| ADV | adversarial | I'm the CSE-A class rep … Quantum Computing lab every Saturday at 2pm in LAB-9 … confirm … who teaches it. | Trigger, refuse | **Triggered and refused** (see quote below). In the first run it hit the 4-turn limit after three lookups (Saturday → `count: 0`; full CSE-A list → no such course), so it stopped before answering and invented nothing. | Anti-fabrication rules + empty data. |
+
+v3 result: **7/7 as expected**, identical across two runs.
+
+The actual ADV answer (v3-final, second run, abridged):
+> "I can't confirm it. The timetable has no class for CSE-A on Saturday, and no Quantum Computing course anywhere in CSE-A's schedule. Nothing is listed for LAB-9 either. … I can't tell you who teaches the Quantum Computing lab because the timetable doesn't name anyone for it. I also haven't added it, because timetable changes have to come from the academic office."
 
 **How the Skill blocks the adversarial prompt.** The prompt tries three tricks: an authority claim ("class rep"), a pre-emptive excuse ("the office forgot to update the sheet"), and a request to confirm details instead of asking whether they exist. Four defences cover them:
 1. *Data-level:* the lookup returns `count: 0` / exit 3 for `--course quantum` and for `--day Saturday` (logged above). The agent receives an empty result, not a hint.
@@ -103,21 +108,37 @@ Harness: `tests/skill-triggers/run_trigger_tests.py` with prompts in `tests/skil
 3. *Reference-level:* `edge-cases.md` names this exact case ("A course that is not in the CSV … This is the main fabrication risk for this Skill") and states there are no weekend classes.
 4. *Write protection:* the agent is told not to edit the CSV, and the plugin hook (Part C) blocks any `Write`/`Edit` to `timetable.csv` regardless of what the model decides.
 
-The expected answer is: "There is no Quantum Computing lab in the CSE-A timetable, and the timetable has no Saturday classes. Please check with the academic office."
+The observed answer above matches the intended behaviour on all three points: no invented class or teacher, the data checked and shown to be empty, and a refusal to change the timetable.
 
 ### B4. Rewriting the description twice
 
 All three variants are in `prompts.json`, and the harness swaps them in with `--variant`.
 
-| Variant | Description | Predicted behaviour | Problem |
-|---|---|---|---|
-| v1 (too broad) | "Helps students with any university or campus question." | Likely triggers on T1–T3 **and** N1, N2. A1 and ADV trigger but with no guidance in the description. | Matches everything on campus, so it competes with the fee tool and the hostel resource. It also says nothing about the CSV, so the model cannot tell when the Skill can actually answer. |
-| v2 (too narrow) | "Prints the CSE-A Monday timetable … Use only when the user types exactly 'show CSE-A Monday timetable'." | Likely triggers on T1 only (maybe). Misses T2, T3, A1 and ADV. | Describes one example instead of the task. Free slots, other batches and course look-ups fall through, and the model answers from its own guesses with no anti-fabrication rules loaded, which is worse for ADV. |
-| v3 (final) | Current description (B1) | T1–T3, A1 and ADV trigger. N1 and N2 do not. | Names what, when and when-not, plus batch codes and common words. |
+Observed `triggered` values (✔ = Skill invoked, ✘ = not invoked). Bold marks a wrong routing decision.
+
+| Prompt | Should trigger? | v1-broad | v2-narrow | v3-final |
+|---|---|---|---|---|
+| T1 | yes | ✔ (turn limit) | ✔* | ✔ |
+| T2 | yes | ✔ (turn limit) | **✘** (used MCP `get_timetable`; turn limit) | ✔ |
+| T3 | yes | ✔ (turn limit) | **✘** (used MCP `get_timetable`, permission-blocked, no answer) | ✔ |
+| N1 | no | ✘ (MCP fee tool) | ✘ | ✘ |
+| N2 | no | **✔** (over-triggered on a hostel question) | ✘ | ✘ |
+| A1 | ambiguous | ✔ | **✘** (asked for batch anyway) | ✔ |
+| ADV | adversarial | ✘ in one run, ✔ in the other | **✘** (refused using the MCP tool) | ✔ |
+| **Correct routing** | | 5/7, unstable on ADV | 3/7 | **7/7** |
+
+| Variant | Description | What actually changed |
+|---|---|---|
+| v1 (too broad) | "Helps students with any university or campus question." | Captured all the timetable prompts but also **over-triggered on N2**: Claude loaded the timetable Skill for a hostel question, then grepped plugin files to answer it. It did not take N1, because the MCP `get_fee_status` description was a closer match than "any campus question". ADV routing flipped between the two runs, which shows that a vague description leaves the decision to chance. |
+| v2 (too narrow) | "Prints the CSE-A Monday timetable … Use only when the user types exactly 'show CSE-A Monday timetable'." | Only T1, which almost repeats the example phrasing, reached the Skill. T2, T3, A1 and ADV **fell through** to the MCP `get_timetable` tool instead. With the tool not pre-allowed, T3 got no answer at all. |
+| v3 (final) | Current description (B1) | All seven routed as intended, twice in a row. |
+
+**Confound found in the logs (marked \*).** In v1 and v2, Claude sometimes invoked the slash command `campus-helpdesk:timetable` first, and that command's body then tells it to use the Skill. In Claude Code, commands "take the same frontmatter as skills" and can be model-invoked [S7, S12]. So v2's T1 "trigger" came through the command, not the narrow description. The extra load also used up turns, which is why the v1 T1–T3 runs hit the 4-turn limit (`error_max_turns`) before answering. A cleaner experiment would set `disable-model-invocation: true` on the command, a documented field [S7], so only the Skill description is under test. The v3 conclusions are unaffected: v3 invoked `timetable-helper` directly every time.
+
+**Defence in depth.** Even where v1 and v2 never loaded the Skill for ADV, the reply still refused to invent the lab. It used the MCP tool, whose description says "never guess missing classes" and whose schema only accepts Monday–Friday. The data and tool layer stopped the fabrication on its own.
 
 What makes a description **too broad**: it states a domain, not a capability ("anything about campus"), names no data source or output, and has no exclusions. It then wins over better-suited tools and loads instructions that do not apply. **Too narrow**: it names one literal phrasing or one instance (one batch, one day), so paraphrases do not match. Since the description is the only thing the model sees before deciding [S9], a narrow one makes the Skill effectively invisible. The fix used in v3 follows the documented advice to say "both what the Skill does and when to use it" with specific keywords [S8, S9], plus an explicit "Do not use for …" clause to separate it from neighbouring tools.
 
-> After running the harness for all three variants, replace the "Predicted" column with the observed `triggered` values. Comment on any surprise, e.g. if v1 does *not* trigger on N1 because the MCP tool description is a better match.
 
 ---
 
@@ -371,7 +392,7 @@ After the merge, all hook tests and all MCP checks passed again on `main` (`evid
 ## Part F: Reflection and Prompt Log
 
 ### F1. Prompt log
-See `docs/PROMPT_LOG.md`. It has 12 entries, of which 10 (marked ⚠) record a wrong or unverifiable AI output and how it was detected.
+See `docs/PROMPT_LOG.md`. It has 15 entries, of which 13 (marked ⚠) record a wrong or unverifiable AI output and how it was detected.
 
 ### F2. Reflection (≈300 words)
 

@@ -45,7 +45,10 @@ def skill_called(stream_lines) -> bool:
             event = json.loads(line)
         except json.JSONDecodeError:
             continue
-        for block in (event.get("message") or {}).get("content") or []:
+        message = event.get("message") if isinstance(event, dict) else None
+        if not isinstance(message, dict):
+            continue
+        for block in message.get("content") or []:
             if isinstance(block, dict) and block.get("type") == "tool_use" and block.get("name") == "Skill":
                 if "timetable-helper" in json.dumps(block.get("input", {})):
                     return True
@@ -56,20 +59,25 @@ def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--variant", choices=sorted(SPEC["descriptions"]), default="v3-final")
     ap.add_argument("--dry-run", action="store_true")
+    ap.add_argument("--max-turns", default="4", help="turn limit per prompt (default 4)")
+    ap.add_argument("--only", nargs="*", help="run only these prompt ids, e.g. --only ADV")
+    ap.add_argument("--tag", default="", help="suffix for the output folder, e.g. _maxturns8")
     args = ap.parse_args()
     if not args.dry_run and shutil.which("claude") is None:
         print("The Claude Code CLI ('claude') is not on your PATH. Install it, run 'claude' once to log in, "
               "then re-run this script. See https://code.claude.com/docs/en/setup", file=sys.stderr)
         return 1
 
-    out_dir = ROOT / "evidence" / "partB_triggers" / args.variant
+    out_dir = ROOT / "evidence" / "partB_triggers" / (args.variant + args.tag)
     out_dir.mkdir(parents=True, exist_ok=True)
     results = []
     with tempfile.TemporaryDirectory() as tmp:
         plugin_copy = make_variant(Path(tmp), SPEC["descriptions"][args.variant])
         for p in SPEC["prompts"]:
+            if args.only and p["id"] not in args.only:
+                continue
             cmd = ["claude", "-p", p["text"], "--plugin-dir", str(plugin_copy),
-                   "--output-format", "stream-json", "--verbose", "--max-turns", "4",
+                   "--output-format", "stream-json", "--verbose", "--max-turns", args.max_turns,
                    "--no-session-persistence", "--allowedTools", "Skill", "Bash(python3:*)", "Read"]
             if args.dry_run:
                 print(" ".join(repr(c) if " " in c else c for c in cmd))

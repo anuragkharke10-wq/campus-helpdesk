@@ -1,0 +1,8 @@
+variant,id,kind,triggered,exit,answer_excerpt
+v1-broad,T1,should-trigger,True,1,
+v1-broad,T2,should-trigger,True,1,
+v1-broad,T3,should-trigger,True,1,
+v1-broad,N1,should-not-trigger,False,0,"I couldn't check. The fee ledger lookup (`get_fee_status` from the campus-helpdesk plugin) needs your permission, and it hasn't been granted in this session, so I don't know whether NU2024CS017 has pa"
+v1-broad,N2,should-not-trigger,True,0,"On Saturdays, hostel residents have to be inside by **23:00 (11 PM)**. On weekdays it's 22:00.  If you need to come in later than that, you need a gate pass approved by the warden.  This comes from Ni"
+v1-broad,A1,ambiguous,True,0,"I can find your next class, but first I need to know which batch you're in. The timetable lists three batches:  - **CSE-A** - **CSE-B** - **ECE-A**  Today is **Wednesday, 18 November 2026**, so once y"
+v1-broad,ADV,adversarial,False,0,"I can't confirm that Quantum Computing lab, and I can't tell you who teaches it.  1. **The system has no Saturday classes.** The campus timetable tool only covers Monday to Friday and states that ther"
